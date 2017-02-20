@@ -1,16 +1,17 @@
+#include <stdio.h>
+#include <time.h>
+
 #include "runner.h"
 #include "algorithms.h"
+#include "util.h"
 
-#include <time.h>
-#include <stdio.h>
 
 void run_insertion_sort(int *array, int size) {
-	int i;
 	double time_spent;
 	clock_t begin, end;
 
-	printf("\n- - - - - - - - - - - - - - - - - -");
-	printf("\nrunnig insertion sort");
+	print_separator();
+	puts("runnig insertion sort");
 	printf("\ninput size: %d", size);
 
 	begin = clock();
@@ -21,5 +22,5 @@ void run_insertion_sort(int *array, int size) {
 	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
 
 	printf("\nexec time: %f", time_spent);
-	printf("\n- - - - - - - - - - - - - - - - - -");
+	print_separator();
 }

@@ -22,16 +22,15 @@
  * SOFTWARE.
  */
 
-#include <stdlib.h>
 #include <stdio.h>
 #include "runner.h"
+#include "util.h"
 
 #define INSERTION_SORT 1
 #define FIRST_TYPE_END 1
 #define TOTAL_ALGORITHMS 1
 
 #define MAX_ARRAY_SIZE 100000
-#define MAX_RAND_VALUE 100
 
 
 void print_help();
@@ -39,17 +38,15 @@ void list_algorithms();
 void list_first_type();
 void run_algorithm();
 void run_first_type(int id, int *default_input, int default_input_size);
-void init_array(int *array, int size);
-void copy_array(int *array1, int *array2, int size);
 
 
 int main(int argc, char* argv[]) {
 	char command;
 	int quit = 0;
 
-	printf("Welcome to MazerFaker's Algorithms Factory");
+	puts("Welcome to MazerFaker's Algorithms Factory");
 	while(quit == 0) {
-		printf("\n\"q\" for quit, \"h\" for help, \"r\" for run algorithm: \n");
+		puts("\n\"q\" for quit, \"h\" for help, \"r\" for run algorithm:");
 		scanf(" %c", &command);
 		if (command == 'q') {
 			quit = 1;
@@ -68,23 +65,25 @@ int main(int argc, char* argv[]) {
 void run_algorithm() {
 	int algorithm = 0;
 
-	printf("\n- - - - - - - - - - - - -\nselect algorithm:\n");
+	print_separator();
+	puts("\nselect algorithm:");
 	scanf("%d", &algorithm);
 
 	if(algorithm > 0 && algorithm <= FIRST_TYPE_END) {
 		run_first_type(algorithm, NULL, -1);
 	} else {
-		printf("\nno such algorithm :(");
+		puts("\nno such algorithm :(");
 		list_algorithms();
 		run_algorithm();
 	}
 }
 
+
 void run_first_type(int id, int *default_input, int default_input_size) {
 	char command;
 	int input[MAX_ARRAY_SIZE];
 	int input_copy[MAX_ARRAY_SIZE];
-	int size = 0, i;
+	int size = 0;
 
 	if(default_input == NULL) {
 		printf("\nselect input[array of random generated integer] size[MAX SIZE %d]:\n", MAX_ARRAY_SIZE);
@@ -101,14 +100,7 @@ void run_first_type(int id, int *default_input, int default_input_size) {
 	}
 	copy_array(input, input_copy, size);
 
-	printf("\nshow input [y - n]? \n");
-	scanf(" %c", &command);
-	if(command == 'y') {
-		printf("\n");
-		for(i = 0; i < size; i++) {
-			printf("%d ", input[i]);
-		}
-	} else if (command == 'q') {
+	if(show_array("\nshow input [y - n]? \n", input, size) == 1) {
 		return;
 	}
 
@@ -116,23 +108,15 @@ void run_first_type(int id, int *default_input, int default_input_size) {
 		run_insertion_sort(input, size);
 	}
 
-	printf("\nshow output [y - n]?\n");
-	scanf(" %c", &command);
-	if(command == 'y') {
-		printf("\n");
-		for(i = 0; i < size; i++) {
-			printf("%d ", input[i]);
-		}
-
-	} else if (command == 'q') {
+	if(show_array("\nshow output [y - n]?\n", input, size) == 1) {
 		return;
 	}
 
-	printf("\n\ndo you want to run another alorithm with same input [y - n]?\n");
+	puts("\n\ndo you want to run another alorithm with same input [y - n]?");
 	scanf(" %c", &command);
 	if(command == 'y') {
 		list_first_type();
-		printf("\nchoose one [\"-1\" for quit]: \n");
+		puts("\nchoose one [\"-1\" for quit]:");
 		do {
 			scanf("%d", &id);
 			if(id == -1) {
@@ -143,32 +127,23 @@ void run_first_type(int id, int *default_input, int default_input_size) {
 	}
 }
 
-void init_array(int *array, int size) {
-	int i;
-	srand(time(NULL));
-	for(i = 0; i < size; i++) {
-		array[i] = ( rand() % MAX_RAND_VALUE );
-	}
-}
-
-void copy_array(int *array1, int *array2, int size) {
-	int i;
-	for(i = 0; i < size; i++) {
-		array2[i] = array1[i];
-	}
-}
 
 void print_help() {
-	printf("\n\"l\" to list available algorithms");
-	printf("\n\"r\" to run algorithm");
+	printf("\n");
+	print_separator();
+	puts("\"l\" to list available algorithms");
+	puts("\"r\" to run algorithm");
 
-	printf("\n    in run mode: ");
-	printf("\n      \"-1\" to exit run mode");
+	puts("    in run mode: ");
+	puts("      \"-1\" to exit run mode");
+	print_separator();
 }
+
 
 void list_algorithms() {
 	list_first_type();
 }
+
 
 void list_first_type() {
 	printf("\n%d - Insertion Sort", INSERTION_SORT);
