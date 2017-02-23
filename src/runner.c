@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <time.h>
 
 #include "runner.h"
@@ -106,4 +107,24 @@ void run_merge() {
 	} else if(command == 'q') {
 		return;
 	}
+}
+
+
+void run_merge_sort(int *array, int size) {
+	double time_spent;
+	clock_t begin, end;
+
+	print_separator();
+	puts("runnig merge sort");
+	printf("\ninput size: %d", size);
+
+	begin = clock();
+
+	merge_sort(array, 0, size);
+
+	end = clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+
+	printf("\nexec time: %f", time_spent);
+	print_separator();
 }

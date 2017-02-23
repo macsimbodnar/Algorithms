@@ -23,14 +23,16 @@
  */
 
 #include <stdio.h>
+#include <stdlib.h>
 #include "runner.h"
 #include "util.h"
 
 #define INSERTION_SORT 1
-#define MERGE 2
+#define MERGE_SORT 2
+#define MERGE 3
 
-#define FIRST_TYPE_END 1
-#define TOTAL_ALGORITHMS 2
+#define FIRST_TYPE_END 2
+#define TOTAL_ALGORITHMS 3
 
 
 void print_help();
@@ -61,7 +63,7 @@ int main(int argc, char* argv[]) {
 			list_algorithms();
 			run_algorithm();
 		} else if (command == 't') {
-			run_merge();
+
 		}
 
 		printf("\n\n");
@@ -91,23 +93,31 @@ void run_algorithm() {
 
 void run_first_type(int id, int *default_input, int default_input_size) {
 	char command;
-	int input[MAX_ARRAY_SIZE];
-	int input_copy[MAX_ARRAY_SIZE];
 	int size = 0;
+	int *input;
+	int *input_copy;
 
 	if(default_input == NULL) {
-		printf("\nselect input[array of random generated integer] size[MAX SIZE %d]:\n", MAX_ARRAY_SIZE);
+		puts("\nselect input[array of random generated integer] size:");
 		do {
 			scanf("%d", &size);
 			if(size == -1) {
 				return;
 			}
-		} while(size < 0 || size > MAX_ARRAY_SIZE);
+		} while(size < 0);
+	} else {
+		size = default_input_size;
+	}
+
+	input = malloc(size * sizeof(int));
+	input_copy = malloc(size * sizeof(int));
+
+	if(default_input == NULL) {
 		init_array(input, size);
 	} else {
 		copy_array(default_input, input, default_input_size);
-		size = default_input_size;
 	}
+
 	copy_array(input, input_copy, size);
 
 	if(show_input("\nshow input [y - n]? \n", input, size) == 1) {
@@ -116,6 +126,8 @@ void run_first_type(int id, int *default_input, int default_input_size) {
 
 	if(id == INSERTION_SORT) {
 		run_insertion_sort(input, size);
+	} else if(id == MERGE_SORT) {
+		run_merge_sort(input, size);
 	}
 
 	if(show_input("\nshow output [y - n]?\n", input, size) == 1) {
@@ -159,4 +171,5 @@ void list_algorithms() {
 
 void list_first_type() {
 	printf("\n%d - Insertion Sort", INSERTION_SORT);
+	printf("\n%d - Merge Sort", MERGE_SORT);
 }

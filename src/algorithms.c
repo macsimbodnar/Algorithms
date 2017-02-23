@@ -1,6 +1,9 @@
+#include <stdio.h>
+#include <stdlib.h>
+
 #include "algorithms.h"
 #include "util.h"
-#include "stdio.h"
+
 
 void insertion_sort(int *array, int size) {
 	int i, j, key;
@@ -15,6 +18,7 @@ void insertion_sort(int *array, int size) {
 		array[i + 1] = key;
 	}
 }
+
 
 /*
  * @require p <= q < r
@@ -60,5 +64,18 @@ void merge(int *array, int p, int q, int r) {
 			k++;
 			i++;
 		}
+	}
+}
+
+
+void merge_sort(int *array, int p, int r) {
+	int q;
+
+	if(p < r) {
+		q = (int) ((p + r) / 2);
+		q++;
+		merge_sort(array, p, q - 1);
+		merge_sort(array, q, r);
+		merge(array, p, q, r);
 	}
 }
