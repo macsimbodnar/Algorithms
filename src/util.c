@@ -15,7 +15,7 @@ void print_separator() {
 	printf("\n");
 }
 
-int show_array(char *message, int *array, int size) {
+int show_input(char *message, int *array, int size) {
 	char command;
 	int i, quit = 0;
 
@@ -31,6 +31,13 @@ int show_array(char *message, int *array, int size) {
 	}
 
 	return quit;
+}
+
+void print_array(int *array, int size) {
+	int i;
+	for(i = 0; i < size; i++) {
+		printf("%d ", array[i]);
+	}
 }
 
 void init_array(int *array, int size) {

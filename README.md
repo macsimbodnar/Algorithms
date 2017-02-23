@@ -28,7 +28,7 @@ Contains some util function like populate an array with random integer or print 
 In this file i put the call to our "algorithms". 
 
 Mainly i make this file to separate the "algorithms" from all that is redundant.
-Things like execution time mensuration, status log, input set up etc... 
+Things like execution time mensuration, status log, input setup etc... 
 
 
 ### algorithms

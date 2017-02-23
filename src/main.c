@@ -27,10 +27,10 @@
 #include "util.h"
 
 #define INSERTION_SORT 1
-#define FIRST_TYPE_END 1
-#define TOTAL_ALGORITHMS 1
+#define MERGE 2
 
-#define MAX_ARRAY_SIZE 100000
+#define FIRST_TYPE_END 1
+#define TOTAL_ALGORITHMS 2
 
 
 void print_help();
@@ -44,7 +44,10 @@ int main(int argc, char* argv[]) {
 	char command;
 	int quit = 0;
 
-	puts("Welcome to MazerFaker's Algorithms Factory");
+	puts("----------------------------------------------");
+	puts("| Welcome to MazerFaker's Algorithms Factory |");
+	puts("----------------------------------------------");
+
 	while(quit == 0) {
 		puts("\n\"q\" for quit, \"h\" for help, \"r\" for run algorithm:");
 		scanf(" %c", &command);
@@ -57,7 +60,12 @@ int main(int argc, char* argv[]) {
 		} else if (command == 'r') {
 			list_algorithms();
 			run_algorithm();
+		} else if (command == 't') {
+			run_merge();
 		}
+
+		printf("\n\n");
+		print_separator();
 	}
 }
 
@@ -71,6 +79,8 @@ void run_algorithm() {
 
 	if(algorithm > 0 && algorithm <= FIRST_TYPE_END) {
 		run_first_type(algorithm, NULL, -1);
+	} else if(algorithm == MERGE) {
+		run_merge();
 	} else {
 		puts("\nno such algorithm :(");
 		list_algorithms();
@@ -100,7 +110,7 @@ void run_first_type(int id, int *default_input, int default_input_size) {
 	}
 	copy_array(input, input_copy, size);
 
-	if(show_array("\nshow input [y - n]? \n", input, size) == 1) {
+	if(show_input("\nshow input [y - n]? \n", input, size) == 1) {
 		return;
 	}
 
@@ -108,7 +118,7 @@ void run_first_type(int id, int *default_input, int default_input_size) {
 		run_insertion_sort(input, size);
 	}
 
-	if(show_array("\nshow output [y - n]?\n", input, size) == 1) {
+	if(show_input("\nshow output [y - n]?\n", input, size) == 1) {
 		return;
 	}
 
@@ -142,6 +152,8 @@ void print_help() {
 
 void list_algorithms() {
 	list_first_type();
+	printf("\n%d - Merge", MERGE);
+	printf("\n");
 }
 
 

@@ -3,4 +3,6 @@
 
 void insertion_sort(int *array, int size);
 
+void merge(int *array, int p, int q, int r);
+
 #endif

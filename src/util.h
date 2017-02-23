@@ -1,7 +1,7 @@
 #ifndef UTIL_ALGORITHMS_H_
 #define UTIL_ALGORITHMS_H_
 
-
+#define MAX_ARRAY_SIZE 100000
 #define MAX_RAND_VALUE 100
 
 #define SEPARATOR_LENGHT 40
@@ -10,7 +10,9 @@
 
 void print_separator();
 
-int show_array(char *message, int *array, int size);
+int show_input(char *message, int *array, int size);
+
+void print_array(int *array, int size);
 
 void init_array(int *array, int size);
 
