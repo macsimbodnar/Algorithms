@@ -29,10 +29,11 @@
 
 #define INSERTION_SORT 1
 #define MERGE_SORT 2
-#define MERGE 3
+#define BUBBLE_SORT 3
+#define MERGE 4
 
-#define FIRST_TYPE_END 2
-#define TOTAL_ALGORITHMS 3
+#define FIRST_TYPE_END 3
+#define TOTAL_ALGORITHMS 4
 
 
 void print_help();
@@ -128,6 +129,8 @@ void run_first_type(int id, int *default_input, int default_input_size) {
 		run_insertion_sort(input, size);
 	} else if(id == MERGE_SORT) {
 		run_merge_sort(input, size);
+	} else if(id == BUBBLE_SORT) {
+		run_bubble_sort(input, size);
 	}
 
 	if(show_input("\nshow output [y - n]?\n", input, size) == 1) {
@@ -172,4 +175,5 @@ void list_algorithms() {
 void list_first_type() {
 	printf("\n%d - Insertion Sort", INSERTION_SORT);
 	printf("\n%d - Merge Sort", MERGE_SORT);
+	printf("\n%d - Bubble Sort", BUBBLE_SORT);
 }

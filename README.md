@@ -49,7 +49,7 @@ Just C headers files. They contain function prototypes, constants and data struc
 
 * To build the program, navigate into project root directory
 * Create here bin directory
-* Run this command: `gcc src/*.c -o bin/algorithms.out` it runs gcc compiler and pass him all file that have .c extension
+* Run this command: `gcc src/*.c -o bin/algorithms.out` it runs gcc compiler and pass him all files that have .c extension
 in src folder. After compiling process gcc writes output file in bin folder with "algorithms.out" name. If you don't set -o [output name file] then gcc makes a.out in current directory.
 * To run Algorithms run: `./bin/algorithms.out` in current directory.
 * Enjoy it (0)(0)

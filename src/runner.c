@@ -12,7 +12,7 @@ void run_insertion_sort(int *array, int size) {
 	clock_t begin, end;
 
 	print_separator();
-	puts("runnig insertion sort");
+	puts("running insertion sort");
 	printf("\ninput size: %d", size);
 
 	begin = clock();
@@ -88,7 +88,7 @@ void run_merge() {
 	}
 
 	print_separator();
-	puts("runnig merge");
+	puts("running merge");
 
 	begin = clock();
 
@@ -115,12 +115,32 @@ void run_merge_sort(int *array, int size) {
 	clock_t begin, end;
 
 	print_separator();
-	puts("runnig merge sort");
+	puts("running merge sort");
 	printf("\ninput size: %d", size);
 
 	begin = clock();
 
 	merge_sort(array, 0, size);
+
+	end = clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+
+	printf("\nexec time: %f", time_spent);
+	print_separator();
+}
+
+
+void run_bubble_sort(int *array, int size) {
+	double time_spent;
+	clock_t begin, end;
+
+	print_separator();
+	puts("running bubble sort");
+	printf("\ninput size: %d", size);
+
+	begin = clock();
+
+	bubble_sort(array, size);
 
 	end = clock();
 	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;

@@ -58,3 +58,13 @@ void copy_array(int *array1, int *array2, int size) {
 		array2[i] = array1[i];
 	}
 }
+
+
+/*
+ * swap in array element on position j with element on position i
+ */
+void swap(int *array, int i, int j){
+	int tmp = array[i];
+	array[i] = array[j];
+	array[j] = tmp;
+}
