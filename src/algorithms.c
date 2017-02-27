@@ -97,3 +97,21 @@ void bubble_sort(int *array, int size) {
 }
 
 
+void bubble_sort_v2(int *array, int size) {
+	int i;
+	int swapped = 1;
+
+	size--;
+	while(swapped == 1) {
+		swapped = 0;
+		for(i = 0; i < size; i++) {
+			if(array[i] > array[i + 1]) {
+				swap(array, i, i + 1);
+				swapped = 1;
+			}
+		}
+		size--;
+	}
+}
+
+

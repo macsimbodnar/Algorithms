@@ -10,5 +10,7 @@ void merge_sort(int *array, int p, int r);
 
 void bubble_sort(int *array, int size);
 
+void bubble_sort_v2(int *array, int size);
+
 
 #endif

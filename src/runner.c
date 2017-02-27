@@ -148,3 +148,23 @@ void run_bubble_sort(int *array, int size) {
 	printf("\nexec time: %f", time_spent);
 	print_separator();
 }
+
+
+void run_bubble_sort_v2(int *array, int size) {
+	double time_spent;
+	clock_t begin, end;
+
+	print_separator();
+	puts("running bubble sort version 2");
+	printf("\ninput size: %d", size);
+
+	begin = clock();
+
+	bubble_sort_v2(array, size);
+
+	end = clock();
+	time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
+
+	printf("\nexec time: %f", time_spent);
+	print_separator();
+}
