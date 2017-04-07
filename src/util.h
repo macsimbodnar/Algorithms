@@ -10,15 +10,15 @@
 
 void print_separator();
 
-int show_input(char *message, int *array, int size);
+int show_input(char *p_message, int *p_array, int size);
 
-void print_array(int *array, int size);
+void print_array(int *p_array, int size);
 
-void init_array(int *array, int size);
+void init_array(int *p_array, int size);
 
-void copy_array(int *array1, int *array2, int size);
+void copy_array(int *p_array1, int *p_array2, int size);
 
-void swap(int *array, int i, int j);
+void swap(int *p_array, int i, int j);
 
 
 #endif

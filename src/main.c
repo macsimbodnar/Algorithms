@@ -31,17 +31,19 @@
 #define MERGE_SORT 2
 #define BUBBLE_SORT 3
 #define BUBBLE_SORT_V2 4
-#define MERGE 5
+#define BUBBLE_SORT_V3 5
 
-#define FIRST_TYPE_END 4
-#define TOTAL_ALGORITHMS 5
+#define MERGE 6
+
+#define FIRST_TYPE_END 5
+#define TOTAL_ALGORITHMS 6
 
 
 void print_help();
 void list_algorithms();
 void list_first_type();
 void run_algorithm();
-void run_first_type(int id, int *default_input, int default_input_size);
+void run_first_type(int id, int *p_default_input, int default_input_size);
 
 
 int main(int argc, char* argv[]) {
@@ -93,13 +95,13 @@ void run_algorithm() {
 }
 
 
-void run_first_type(int id, int *default_input, int default_input_size) {
+void run_first_type(int id, int *p_default_input, int default_input_size) {
 	char command;
 	int size = 0;
-	int *input;
-	int *input_copy;
+	int *p_input;
+	int *p_input_copy;
 
-	if(default_input == NULL) {
+	if(p_default_input == NULL) {
 		puts("\nselect input[array of random generated integer] size:");
 		do {
 			scanf("%d", &size);
@@ -111,32 +113,34 @@ void run_first_type(int id, int *default_input, int default_input_size) {
 		size = default_input_size;
 	}
 
-	input = malloc(size * sizeof(int));
-	input_copy = malloc(size * sizeof(int));
+	p_input = malloc(size * sizeof(int));
+	p_input_copy = malloc(size * sizeof(int));
 
-	if(default_input == NULL) {
-		init_array(input, size);
+	if(p_default_input == NULL) {
+		init_array(p_input, size);
 	} else {
-		copy_array(default_input, input, default_input_size);
+		copy_array(p_default_input, p_input, default_input_size);
 	}
 
-	copy_array(input, input_copy, size);
+	copy_array(p_input, p_input_copy, size);
 
-	if(show_input("\nshow input [y - n]? \n", input, size) == 1) {
+	if(show_input("\nshow input [y - n]? \n", p_input, size) == 1) {
 		return;
 	}
 
 	if(id == INSERTION_SORT) {
-		run_insertion_sort(input, size);
+		run_insertion_sort(p_input, size);
 	} else if(id == MERGE_SORT) {
-		run_merge_sort(input, size);
+		run_merge_sort(p_input, size);
 	} else if(id == BUBBLE_SORT) {
-		run_bubble_sort(input, size);
+		run_bubble_sort(p_input, size);
 	} else if(id == BUBBLE_SORT_V2) {
-		run_bubble_sort_v2(input, size);
+		run_bubble_sort_v2(p_input, size);
+	} else if(id == BUBBLE_SORT_V3) {
+		run_bubble_sort_v3(p_input, size);
 	}
 
-	if(show_input("\nshow output [y - n]?\n", input, size) == 1) {
+	if(show_input("\nshow output [y - n]?\n", p_input, size) == 1) {
 		return;
 	}
 
@@ -151,7 +155,7 @@ void run_first_type(int id, int *default_input, int default_input_size) {
 				return;
 			}
 		} while (id < 0 || id > FIRST_TYPE_END);
-		run_first_type(id, input_copy, size);
+		run_first_type(id, p_input_copy, size);
 	}
 }
 
@@ -180,4 +184,5 @@ void list_first_type() {
 	printf("\n%d - Merge Sort", MERGE_SORT);
 	printf("\n%d - Bubble Sort", BUBBLE_SORT);
 	printf("\n%d - Bubble Sort version 2", BUBBLE_SORT_V2);
+	printf("\n%d - Bubble Sort version 3", BUBBLE_SORT_V3);
 }
