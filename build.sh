@@ -1,6 +1,6 @@
 #!/bin/bash
 echo building...
 
-gcc src/*.c -o bin/algorithms.out
+gcc -Wall src/*.c -o bin/algorithms.out
 
 echo finish!
