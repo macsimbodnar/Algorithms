@@ -92,7 +92,7 @@ void run_algorithm()
 	switch(algType) {
 
 		case TYPE_SORTING:
-			run_sorting_alg();
+		    run_sorting_alg();
 			break;
 
 		default:
@@ -101,92 +101,92 @@ void run_algorithm()
 			break;
 
 	}
-
-
 }
 
 
 void run_sorting_alg()
 {
-    int algorithm = 0;
-    int inputSize = 0;
-    int * input = 0;
+    do {
+        int algorithm = 0;
+        int inputSize = 0;
+        int * input = 0;
 
-    // select algorithm 
-    while (!algorithm) {
-        puts("\nselect algorithm:");
-        scanf("%d", &algorithm);
-        
-        if (algorithm <= 0 || algorithm > sizeof(global_sortAlg) / sizeof(global_sortAlg[0])) {
-            puts("\nno such algorithm :(");
-            list_sort_alg();
-            algorithm = 0;
-        }
-    } 
-    
-    // decrement because list algortihm and algorithm array are shifted by one
-    algorithm--;
-    printf("\nyou select %s", global_sortAlg[algorithm].name);
-    
-    if (global_inputSize <= 0 || global_input == 0) {
-        global_rerun = 0;
-    }
-    
-    if (global_rerun) {
-        inputSize = global_inputSize;
-        input = (int *) malloc(global_inputSize * sizeof(int));
-        if (input == 0) {
-            puts("\nerror in allocation of memory!");
-            return;
-        }
-
-        copy_array(global_input, input, global_inputSize);
-
-    } else {
-        
-        // select input size
-        while (!inputSize) {
-            puts("\nselect input[array of random generated integer] size:");
-            scanf(" %d", &inputSize);
-
-            if (inputSize <= 0) {
-                puts("\nsize must be greater than one!");
+        // select algorithm 
+        while (!algorithm) {
+            puts("\nselect algorithm:");
+            scanf("%d", &algorithm);
+            
+            if (algorithm <= 0 || algorithm > sizeof(global_sortAlg) / sizeof(global_sortAlg[0])) {
+                puts("\nno such algorithm :(");
+                list_sort_alg();
+                algorithm = 0;
             }
-        }
- 
-        // alloc input memory
-        input = (int *) malloc(inputSize * sizeof(int));
-        if (input == 0) {
-            puts("\nerror in allocation of memory!");
-            return;
-        }
-
-        populate_array(input, inputSize);
+        } 
         
-        free(global_input);
-        global_input = (int *) malloc(inputSize * sizeof(int));
-        if (global_input == 0) {
-            puts("\nerror in allocation of memory!");
-            return;
+        // decrement because list algortihm and algorithm array are shifted by one
+        algorithm--;
+        printf("\nyou select %s", global_sortAlg[algorithm].name);
+        
+        if (global_inputSize <= 0 || global_input == 0) {
+            global_rerun = 0;
         }
         
-        global_inputSize = inputSize;
-        copy_array(input, global_input, inputSize);
-    }
+        if (global_rerun) {
+            inputSize = global_inputSize;
+            input = (int *) malloc(global_inputSize * sizeof(int));
+            if (input == 0) {
+                puts("\nerror in allocation of memory!");
+                return;
+            }
+
+            copy_array(global_input, input, global_inputSize);
+
+        } else {
+            
+            // select input size
+            while (!inputSize) {
+                puts("\nselect input[array of random generated integer] size:");
+                scanf(" %d", &inputSize);
+
+                if (inputSize <= 0) {
+                    puts("\nsize must be greater than one!");
+                }
+            }
+     
+            // alloc input memory
+            input = (int *) malloc(inputSize * sizeof(int));
+            if (input == 0) {
+                puts("\nerror in allocation of memory!");
+                return;
+            }
+
+            populate_array(input, inputSize);
+            
+            free(global_input);
+            global_input = (int *) malloc(inputSize * sizeof(int));
+            if (global_input == 0) {
+                puts("\nerror in allocation of memory!");
+                return;
+            }
+            
+            global_inputSize = inputSize;
+            copy_array(input, global_input, inputSize);
+        }
 
 
-    global_sortAlg[algorithm].execute(input, inputSize);
-    
-    free(input);
+        global_sortAlg[algorithm].execute(input, inputSize);
+        
+        free(input);
 
-    puts("\ndo you want to run another sorting algorithm with the same input? [y - n]");
-    scanf(" %c", &global_command);
-    if (global_command == 'y' || global_command == 'Y') {
-        global_rerun = 1;
-        run_sorting_alg();
-    }
+        puts("\ndo you want to run another sorting algorithm with the same input? [y - n]");
+        scanf(" %c", &global_command);
+        if (global_command == 'y' || global_command == 'Y') {
+            global_rerun = 1;
+        } else {
+            global_rerun = 0;
+        }
 
-    global_rerun = 0;
+    } while (global_rerun);
 }
 
 
