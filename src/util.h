@@ -7,17 +7,22 @@
 #define SEPARATOR_LENGHT 40
 #define SEPARATOR_1 '-'
 
+void print_wellcome_message();
 
 void print_separator();
 
-int show_input(char *p_message, int *p_array, int size);
-
 void print_array(int *p_array, int size);
 
-void init_array(int *p_array, int size);
+void populate_array(int *p_array, int size);
 
+/*
+ * copy array1 in array2
+ */
 void copy_array(int *p_array1, int *p_array2, int size);
 
+/*
+ * swap in array element on position j with element on position i
+ */
 void swap(int *p_array, int i, int j);
 
 

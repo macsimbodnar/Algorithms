@@ -22,53 +22,56 @@
  * SOFTWARE.
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "runner.h"
-#include "util.h"
+#include "main.h"
 
-#define INSERTION_SORT 1
-#define MERGE_SORT 2
-#define BUBBLE_SORT 3
-#define BUBBLE_SORT_V2 4
-#define BUBBLE_SORT_V3 5
+static char global_command;
+static unsigned int global_running;
+static sortingAlg global_sortAlg[TOT_SORT_ALG];
+static unsigned int global_inputSize;
+static int* global_input;
+static unsigned int global_rerun;
 
-#define MERGE 6
+int main(int argc, char* argv[])
+{
+    init_algorithms();
+    global_running = 1;
+    global_command = 0;
+    global_inputSize = 0;
+    global_input = 0;
+    global_rerun = 0;
 
-#define FIRST_TYPE_END 5
-#define TOTAL_ALGORITHMS 6
+    print_wellcome_message();
 
+	while(global_running) {
+		puts("\n\"q\" for quit \n\"h\" for help \n\"r\" for run algorithm:");
+		scanf(" %c", &global_command);
 
-void print_help();
-void list_algorithms();
-void list_first_type();
-void run_algorithm();
-void run_first_type(int id, int *p_default_input, int default_input_size);
+        switch(global_command) {
+            
+            case 'Q':
+            case 'q':
+                global_running = 0;
+                break;
 
+            case 'H':
+            case 'h':
+                print_help();
+                break;
 
-int main(int argc, char* argv[]) {
-	char command;
-	int quit = 0;
+            case 'L':
+            case 'l':
+                list_algorithms();
+                break;
 
-	puts("----------------------------------------------");
-	puts("| Welcome to MazerFaker's Algorithms Factory |");
-	puts("----------------------------------------------");
+            case 'R':
+            case 'r':
+                run_algorithm();
+                break;
 
-	while(quit == 0) {
-		puts("\n\"q\" for quit, \"h\" for help, \"r\" for run algorithm:");
-		scanf(" %c", &command);
-		if (command == 'q') {
-			quit = 1;
-		} else if (command == 'h') {
-			print_help();
-		} else if (command == 'l') {
-			list_algorithms();
-		} else if (command == 'r') {
-			list_algorithms();
-			run_algorithm();
-		} else if (command == 't') {
-
-		}
+            default:
+            	print_help();
+                break;
+        }
 
 		printf("\n\n");
 		print_separator();
@@ -76,113 +79,152 @@ int main(int argc, char* argv[]) {
 }
 
 
-void run_algorithm() {
-	int algorithm = 0;
+void run_algorithm()
+{
+	int algType = 0;
 
-	print_separator();
-	puts("\nselect algorithm:");
-	scanf("%d", &algorithm);
+    print_separator();
+    list_algorithms();
+	
+    puts("\nselect algorithm type:");
+	scanf("%d", &algType);
 
-	if(algorithm > 0 && algorithm <= FIRST_TYPE_END) {
-		run_first_type(algorithm, NULL, -1);
-	} else if(algorithm == MERGE) {
-		run_merge();
-	} else {
-		puts("\nno such algorithm :(");
-		list_algorithms();
-		run_algorithm();
+	switch(algType) {
+
+		case TYPE_SORTING:
+			run_sorting_alg();
+			break;
+
+		default:
+			puts("\nno such algorithm type :(");
+			run_algorithm();
+			break;
+
 	}
+
+
 }
 
 
-void run_first_type(int id, int *p_default_input, int default_input_size) {
-	char command;
-	int size = 0;
-	int *p_input;
-	int *p_input_copy;
+void run_sorting_alg()
+{
+    int algorithm = 0;
+    int inputSize = 0;
+    int * input = 0;
 
-	if(p_default_input == NULL) {
-		puts("\nselect input[array of random generated integer] size:");
-		do {
-			scanf("%d", &size);
-			if(size == -1) {
-				return;
-			}
-		} while(size < 0);
-	} else {
-		size = default_input_size;
-	}
+    // select algorithm 
+    while (!algorithm) {
+        puts("\nselect algorithm:");
+        scanf("%d", &algorithm);
+        
+        if (algorithm <= 0 || algorithm > sizeof(global_sortAlg) / sizeof(global_sortAlg[0])) {
+            puts("\nno such algorithm :(");
+            list_sort_alg();
+            algorithm = 0;
+        }
+    } 
+    
+    // decrement because list algortihm and algorithm array are shifted by one
+    algorithm--;
+    printf("\nyou select %s", global_sortAlg[algorithm].name);
+    
+    if (global_inputSize <= 0 || global_input == 0) {
+        global_rerun = 0;
+    }
+    
+    if (global_rerun) {
+        inputSize = global_inputSize;
+        input = (int *) malloc(global_inputSize * sizeof(int));
+        if (input == 0) {
+            puts("\nerror in allocation of memory!");
+            return;
+        }
 
-	p_input = malloc(size * sizeof(int));
-	p_input_copy = malloc(size * sizeof(int));
+        copy_array(global_input, input, global_inputSize);
 
-	if(p_default_input == NULL) {
-		init_array(p_input, size);
-	} else {
-		copy_array(p_default_input, p_input, default_input_size);
-	}
+    } else {
+        
+        // select input size
+        while (!inputSize) {
+            puts("\nselect input[array of random generated integer] size:");
+            scanf(" %d", &inputSize);
 
-	copy_array(p_input, p_input_copy, size);
+            if (inputSize <= 0) {
+                puts("\nsize must be greater than one!");
+            }
+        }
+ 
+        // alloc input memory
+        input = (int *) malloc(inputSize * sizeof(int));
+        if (input == 0) {
+            puts("\nerror in allocation of memory!");
+            return;
+        }
 
-	if(show_input("\nshow input [y - n]? \n", p_input, size) == 1) {
-		return;
-	}
+        populate_array(input, inputSize);
+        
+        free(global_input);
+        global_input = (int *) malloc(inputSize * sizeof(int));
+        if (global_input == 0) {
+            puts("\nerror in allocation of memory!");
+            return;
+        }
+        
+        global_inputSize = inputSize;
+        copy_array(input, global_input, inputSize);
+    }
 
-	if(id == INSERTION_SORT) {
-		run_insertion_sort(p_input, size);
-	} else if(id == MERGE_SORT) {
-		run_merge_sort(p_input, size);
-	} else if(id == BUBBLE_SORT) {
-		run_bubble_sort(p_input, size);
-	} else if(id == BUBBLE_SORT_V2) {
-		run_bubble_sort_v2(p_input, size);
-	} else if(id == BUBBLE_SORT_V3) {
-		run_bubble_sort_v3(p_input, size);
-	}
 
-	if(show_input("\nshow output [y - n]?\n", p_input, size) == 1) {
-		return;
-	}
+    global_sortAlg[algorithm].execute(input, inputSize);
+    
+    free(input);
 
-	puts("\n\ndo you want to run another alorithm with same input [y - n]?");
-	scanf(" %c", &command);
-	if(command == 'y') {
-		list_first_type();
-		puts("\nchoose one [\"-1\" for quit]:");
-		do {
-			scanf("%d", &id);
-			if(id == -1) {
-				return;
-			}
-		} while (id < 0 || id > FIRST_TYPE_END);
-		run_first_type(id, p_input_copy, size);
-	}
+    puts("\ndo you want to run another sorting algorithm with the same input? [y - n]");
+    scanf(" %c", &global_command);
+    if (global_command == 'y' || global_command == 'Y') {
+        global_rerun = 1;
+        run_sorting_alg();
+    }
+
+    global_rerun = 0;
 }
 
 
-void print_help() {
-	printf("\n");
-	print_separator();
-	puts("\"l\" to list available algorithms");
-	puts("\"r\" to run algorithm");
+void print_help()
+{
 
-	puts("    in run mode: ");
-	puts("      \"-1\" to exit run mode");
-	print_separator();
 }
 
 
-void list_algorithms() {
-	list_first_type();
-	printf("\n%d - Merge", MERGE);
-	printf("\n");
+void list_algorithms()
+{
+    printf("\n%d - Sorting algorithms: ", TYPE_SORTING);
+    list_sort_alg();
 }
 
 
-void list_first_type() {
-	printf("\n%d - Insertion Sort", INSERTION_SORT);
-	printf("\n%d - Merge Sort", MERGE_SORT);
-	printf("\n%d - Bubble Sort", BUBBLE_SORT);
-	printf("\n%d - Bubble Sort version 2", BUBBLE_SORT_V2);
-	printf("\n%d - Bubble Sort version 3", BUBBLE_SORT_V3);
+void list_sort_alg() 
+{
+    for (int i = 0; i < sizeof(global_sortAlg)/sizeof(global_sortAlg[0]); i++) {
+        printf("\n  %d - %s", i + 1, global_sortAlg[i].name);
+    }
+}
+
+
+void init_algorithms()
+{
+   global_sortAlg[INSERTION_SORT].name = "Insertion Sort";
+   global_sortAlg[INSERTION_SORT].execute = &run_insertion_sort;
+   
+   global_sortAlg[MERGE_SORT].name = "Merge Sort";
+   global_sortAlg[MERGE_SORT].execute = &run_merge_sort;
+
+   global_sortAlg[BUBBLE_SORT].name = "Bubble Sort";
+   global_sortAlg[BUBBLE_SORT].execute = &run_bubble_sort;
+
+   global_sortAlg[BUBBLE_SORT_V2].name = "Bubble Sort v2";
+   global_sortAlg[BUBBLE_SORT_V2].execute = &run_bubble_sort_v2;
+   
+   global_sortAlg[BUBBLE_SORT_V3].name = "Bubble Sort v3";
+   global_sortAlg[BUBBLE_SORT_V3].execute = &run_bubble_sort_v3;
 }

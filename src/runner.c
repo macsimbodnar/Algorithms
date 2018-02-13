@@ -56,11 +56,11 @@ void run_merge() {
 	} while (size2 < 1);
 
 	int *p_array1 = malloc(size1 * sizeof(int));
-	init_array(p_array1, size1);
+	populate_array(p_array1, size1);
 	insertion_sort(p_array1, size1);
 
 	int *p_array2 = malloc(size2 * sizeof(int));
-	init_array(p_array2, size2);
+	populate_array(p_array2, size2);
 	insertion_sort(p_array2, size2);
 
 	size = size1 + size2;
